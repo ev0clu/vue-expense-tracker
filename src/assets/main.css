@@ -2,7 +2,7 @@
 
 #app {
   max-width: 1280px;
-  padding: 4.5rem 4rem 1rem;
+  padding: 4.5rem 1rem 1rem;
   font-weight: normal;
   min-height: 100vh;
   display: flex;
@@ -16,9 +16,28 @@ a,
   transition: 0.4s;
 }
 
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (hover: hover) {
   nav > a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
     border-radius: 14px;
+  }
+}
+
+@media (min-width: 640px) {
+  #app {
+    padding: 4.5rem 4rem 1rem;
   }
 }

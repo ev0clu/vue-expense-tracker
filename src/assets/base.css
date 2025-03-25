@@ -1,8 +1,14 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --vt-c-rose: rgb(251, 113, 133);
+  --vt-c-rose-mute: rgba(251, 113, 133, 0.9);
+  --vt-c-green: rgb(16, 185, 129);
+  --vt-c-green-mute: rgba(16, 185, 129, 0.9);
+  --vt-c-stone: rgb(245, 245, 244);
+  --vt-c-stone-mute: rgba(245, 245, 244, 0.9);
+
+  --vt-c-white: rgb(255, 255, 255);
+  --vt-c-white-mute: rgba(242, 242, 242, 0.9);
 
   --vt-c-black: #181818;
   --vt-c-black-soft: #222222;
@@ -23,8 +29,14 @@
 
 /* semantic color variables for this project */
 :root {
+  --color-rose: var(--vt-c-rose);
+  --color-rose-mute: var(--vt-c-rose-mute);
+  --color-green: var(--vt-c-green);
+  --color-green-mute: var(--vt-c-green-mute);
+  --color-white: var(--vt-c-white);
+  --color-white-mute: var(--vt-c-white-mute);
+
   --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
   --color-border: var(--vt-c-divider-light-2);
