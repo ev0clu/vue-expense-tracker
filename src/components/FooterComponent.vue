@@ -19,8 +19,7 @@ footer {
   flex-direction: row;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75 2rem; /* 12px 32px */
-  margin-top: 3.5rem; /* 56px */
+  padding: 1.5rem 2rem 0.75rem 2rem; /* 24px 32px 12px 32px */
   width: 100%;
 }
 
@@ -43,5 +42,11 @@ img {
 
 img:hover {
   opacity: 0.6;
+}
+
+@media (min-width: 640px) {
+  footer {
+    padding: 0.5rem 4rem;
+  }
 }
 </style>
