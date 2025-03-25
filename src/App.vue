@@ -21,5 +21,12 @@ main {
   /*  flex: 1 1 0%; */
   flex-grow: 1;
   align-items: center;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  main {
+    padding: 0 4rem;
+  }
 }
 </style>
