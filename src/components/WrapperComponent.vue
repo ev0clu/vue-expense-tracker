@@ -12,6 +12,10 @@
 </template>
 
 <style scoped>
+.item {
+  margin-top: 1rem;
+}
+
 .header {
   font-size: x-large;
   font-weight: 600;
