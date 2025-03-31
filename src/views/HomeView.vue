@@ -5,16 +5,24 @@ import WrapperComponent from '@/components/WrapperComponent.vue'
 import { X } from 'lucide-vue-next'
 import DeleteModal from '@/components/DeleteModal.vue'
 import FormComponent from '@/components/FormComponent.vue'
+import type { History } from '@/types'
+import { restoreStorage, saveStorage } from '@/localstorage'
 
 const toast = useToast()
 const openModal = ref(false)
 const itemId = ref<null | string>(null)
 
-const history = ref([
+const history = ref<History[]>([
   { id: '1a', name: 'shopping', amount: -15 },
   { id: '2b', name: 'selling', amount: 100 },
   { id: '3c', name: 'car', amount: 30 },
 ])
+
+;(() => {
+  const balance = restoreStorage()
+  if (!balance) saveStorage(history.value)
+  else history.value = balance
+})()
 
 const deleteItem = (id: string) => {
   const index = history.value.findIndex((item) => item.id === id)
@@ -24,6 +32,7 @@ const deleteItem = (id: string) => {
     toast.error('Item does not found!')
   } else {
     history.value.splice(index, 1)
+    saveStorage(history.value)
     toast.success(`${name} has been deleted!`)
   }
   openModal.value = false
@@ -42,6 +51,7 @@ const handleCloseModalClick = () => {
 
 const formSubmit = (id: string, name: string, amount: number) => {
   history.value.push({ id, name, amount })
+  saveStorage(history.value)
   toast.success(`${name} has been added!`)
 }
 
