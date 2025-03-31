@@ -1,28 +1,36 @@
 <script setup lang="ts">
 import ButtonComponent from './ButtonComponent.vue'
 
-defineProps<{
+const props = defineProps<{
   id: number
 }>()
-defineEmits<{
-  (e: 'close'): void
-  (e: 'delete', id: number): void
+const emits = defineEmits<{
+  close: []
+  delete: [id: number]
 }>()
+
+function closeButtonHandler() {
+  emits('close')
+}
+
+function deleteButtonHandler(id: number) {
+  emits('delete', id)
+}
 </script>
 
 <template>
-  <div class="modal-backdrop" @click.self="$emit('close')">
+  <div class="modal-backdrop" @click.self="closeButtonHandler">
     <div class="delete-modal">
       <p>Are you sure to delete? You cannot undo it.</p>
 
       <div class="button-wrapper">
-        <ButtonComponent variant="outline" @button-normal-click="$emit('close')">
+        <ButtonComponent variant="outline" @button-normal-click="closeButtonHandler">
           Cancel
         </ButtonComponent>
         <ButtonComponent
           variant="destructive"
           :argument="id"
-          @button-event-click="$emit('delete', id)"
+          @button-event-click="deleteButtonHandler(props.id)"
         >
           Delete
         </ButtonComponent>
