@@ -9,8 +9,7 @@ import FormComponent from '@/components/FormComponent.vue'
 const toast = useToast()
 const openModal = ref(false)
 const itemId = ref<null | string>(null)
-const income = ref(10)
-const expense = ref(-10)
+
 const history = ref([
   { id: '1a', name: 'shopping', amount: -15 },
   { id: '2b', name: 'selling', amount: 100 },
@@ -46,25 +45,39 @@ const formSubmit = (id: string, name: string, amount: number) => {
   toast.success(`${name} has been added!`)
 }
 
-const calculateBalance = computed(() => history.value.reduce((acc, curr) => acc + curr.amount, 0))
+const calculatedBalance = computed(() => history.value.reduce((acc, curr) => acc + curr.amount, 0))
+
+const calculatedIncome = computed(() =>
+  history.value.reduce((acc, curr) => {
+    if (curr.amount > 0) return acc + curr.amount
+    return acc
+  }, 0),
+)
+
+const calculatedExpense = computed(() =>
+  history.value.reduce((acc, curr) => {
+    if (curr.amount < 0) return acc - curr.amount
+    return acc
+  }, 0),
+)
 </script>
 
 <template>
   <div class="home-view">
     <h1>Balance</h1>
     <span class="balance"
-      >{{ calculateBalance < 0 ? '-' : '' }}${{ Math.abs(calculateBalance) }}</span
+      >{{ calculatedBalance < 0 ? '-' : '' }}${{ Math.abs(calculatedBalance) }}</span
     >
     <div>
       <div class="income-expense-wrapper">
         <div class="income">
           <p>Income</p>
-          <span>{{ income > 0 ? '+' : '' }}${{ income }}</span>
+          <span>{{ calculatedIncome > 0 ? '+' : '' }}${{ calculatedIncome }}</span>
         </div>
         <div class="separator"></div>
         <div class="expense">
           <p>Expense</p>
-          <span>{{ expense < 0 ? '-' : '' }}${{ Math.abs(expense) }}</span>
+          <span>{{ calculatedExpense < 0 ? '-' : '' }}${{ Math.abs(calculatedExpense) }}</span>
         </div>
       </div>
       <WrapperComponent>
