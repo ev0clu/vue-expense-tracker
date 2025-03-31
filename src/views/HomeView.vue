@@ -1,27 +1,49 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import WrapperComponent from '@/components/WrapperComponent.vue'
 import { X } from 'lucide-vue-next'
 import DeleteModal from '@/components/DeleteModal.vue'
+import FormComponent from '@/components/FormComponent.vue'
 
+const toast = useToast()
 const openModal = ref(false)
-const itemId = ref<null | number>(null)
+const itemId = ref<null | string>(null)
 const income = ref(10)
 const expense = ref(-10)
 const history = ref([
-  { id: 1, name: 'shopping', amount: -15 },
-  { id: 2, name: 'selling', amount: 100 },
-  { id: 3, name: 'car', amount: 30 },
+  { id: '1a', name: 'shopping', amount: -15 },
+  { id: '2b', name: 'selling', amount: 100 },
+  { id: '3c', name: 'car', amount: 30 },
 ])
 
-const deleteItem = (index: number) => {
-  history.value.splice(index, 1)
+const deleteItem = (id: string) => {
+  const index = history.value.findIndex((item) => item.id === id)
+  const name = history.value[index].name
+
+  if (index === -1) {
+    toast.error('Item does not found!')
+  } else {
+    history.value.splice(index, 1)
+    toast.success(`${name} has been deleted!`)
+  }
   openModal.value = false
+  itemId.value = ''
 }
 
-const handleOpenModalClick = (id: number) => {
+const handleOpenModalClick = (id: string) => {
   openModal.value = true
   itemId.value = id
+}
+
+const handleCloseModalClick = () => {
+  openModal.value = false
+  itemId.value = ''
+}
+
+const formSubmit = (id: string, name: string, amount: number) => {
+  history.value.push({ id, name, amount })
+  toast.success(`${name} has been added!`)
 }
 
 const calculateBalance = computed(() => history.value.reduce((acc, curr) => acc + curr.amount, 0))
@@ -51,26 +73,26 @@ const calculateBalance = computed(() => history.value.reduce((acc, curr) => acc 
         </template>
         <template #content>
           <ul>
-            <li v-for="(item, index) in history" :key="item.id" class="history-item">
+            <li v-for="item in history" :key="item.id" class="history-item">
               <div>{{ item.name }}</div>
               <div :class="item.amount < 0 ? 'history-expense' : 'history-income'">
                 {{ item.amount < 0 ? '-' : '+' }}${{ Math.abs(item.amount) }}
               </div>
-              <button id="delete-btn" @click="handleOpenModalClick(index)"><X /></button>
+              <button id="delete-btn" @click="handleOpenModalClick(item.id)"><X /></button>
             </li>
           </ul>
         </template>
       </WrapperComponent>
       <Teleport to="body">
         <div v-if="openModal && itemId !== null">
-          <DeleteModal :id="itemId" @close="openModal = false" @delete="deleteItem" /></div
+          <DeleteModal :id="itemId" @close="handleCloseModalClick" @delete="deleteItem" /></div
       ></Teleport>
       <WrapperComponent>
         <template #header>
           <p>New Transaction</p>
         </template>
         <template #content>
-          <p>atfft</p>
+          <FormComponent @form-submit="formSubmit" />
         </template>
       </WrapperComponent>
     </div>
