@@ -25,6 +25,7 @@ A simple expense tracker app has built with Vue.js framework, Typescript and mor
 - [Typescript](https://www.typescriptlang.org/)
 - [Lucide Icons](https://lucide.dev/)
 - [chart.js](https://www.npmjs.com/package/chart.js)
+- [vue chartjs](https://www.npmjs.com/package/vue-chartjs)
 - [vue-toastification](https://github.com/Maronato/vue-toastification)
 - [date-fns](https://www.npmjs.com/package/date-fns)
 
