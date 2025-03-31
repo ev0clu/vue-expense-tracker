@@ -95,7 +95,8 @@ const calculatedExpense = computed(() =>
           <p>History</p>
         </template>
         <template #content>
-          <TransitionGroup name="history-list" tag="ul">
+          <p v-if="history.length === 0" class="history-list-empty">History data is empty.</p>
+          <TransitionGroup v-if="history.length > 0" name="history-list" tag="ul">
             <li v-for="item in history" :key="item.id" class="history-item">
               <div>{{ item.name }}</div>
               <div :class="item.amount < 0 ? 'history-expense' : 'history-income'">
@@ -162,6 +163,11 @@ h1 {
   width: 1px;
   background-color: #e7e5e4;
   margin: 1rem 0;
+}
+
+.history-list-empty {
+  color: #a1a1aa;
+  padding: 0.25rem 0;
 }
 
 ul {
