@@ -2,18 +2,18 @@
 import ButtonComponent from './ButtonComponent.vue'
 
 const props = defineProps<{
-  id: number
+  id: string
 }>()
 const emits = defineEmits<{
   close: []
-  delete: [id: number]
+  delete: [id: string]
 }>()
 
 function closeButtonHandler() {
   emits('close')
 }
 
-function deleteButtonHandler(id: number) {
+function deleteButtonHandler(id: string) {
   emits('delete', id)
 }
 </script>
