@@ -85,7 +85,7 @@ const calculatedExpense = computed(() =>
           <p>History</p>
         </template>
         <template #content>
-          <ul>
+          <TransitionGroup name="history-list" tag="ul">
             <li v-for="item in history" :key="item.id" class="history-item">
               <div>{{ item.name }}</div>
               <div :class="item.amount < 0 ? 'history-expense' : 'history-income'">
@@ -93,7 +93,7 @@ const calculatedExpense = computed(() =>
               </div>
               <button id="delete-btn" @click="handleOpenModalClick(item.id)"><X /></button>
             </li>
-          </ul>
+          </TransitionGroup>
         </template>
       </WrapperComponent>
       <Teleport to="body">
@@ -163,6 +163,16 @@ ul {
 
 ul > * + * {
   margin-top: 0.25rem;
+}
+
+.history-list-enter-active,
+.history-list-leave-active {
+  transition: all 0.5s ease;
+}
+.history-list-enter-from,
+.history-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 
 .history-item {
