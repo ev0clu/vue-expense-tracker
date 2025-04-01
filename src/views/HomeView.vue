@@ -1,39 +1,26 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import WrapperComponent from '@/components/WrapperComponent.vue'
 import { X } from 'lucide-vue-next'
 import DeleteModal from '@/components/DeleteModal.vue'
 import FormComponent from '@/components/FormComponent.vue'
-import type { History } from '@/types'
-import { restoreStorage, saveStorage } from '@/localstorage'
+import { useStore } from '@/composable/useStore'
+import { ref } from 'vue'
 
 const toast = useToast()
 const openModal = ref(false)
 const itemId = ref<null | string>(null)
 
-const history = ref<History[]>([
-  { id: '1a', name: 'shopping', amount: -15 },
-  { id: '2b', name: 'selling', amount: 100 },
-  { id: '3c', name: 'car', amount: 30 },
-])
-
-;(() => {
-  const balance = restoreStorage()
-  if (!balance) saveStorage(history.value)
-  else history.value = balance
-})()
+const { history, addItem, removeItem, calculatedBalance, calculatedIncome, calculatedExpense } =
+  useStore()
 
 const deleteItem = (id: string) => {
-  const index = history.value.findIndex((item) => item.id === id)
-  const name = history.value[index].name
+  const item = removeItem(id)
 
-  if (index === -1) {
+  if (item === null) {
     toast.error('Item does not found!')
   } else {
-    history.value.splice(index, 1)
-    saveStorage(history.value)
-    toast.success(`${name} has been deleted!`)
+    toast.success(`${item} has been deleted!`)
   }
   openModal.value = false
   itemId.value = ''
@@ -50,26 +37,9 @@ const handleCloseModalClick = () => {
 }
 
 const formSubmit = (id: string, name: string, amount: number) => {
-  history.value.push({ id, name, amount })
-  saveStorage(history.value)
+  addItem(id, name, amount)
   toast.success(`${name} has been added!`)
 }
-
-const calculatedBalance = computed(() => history.value.reduce((acc, curr) => acc + curr.amount, 0))
-
-const calculatedIncome = computed(() =>
-  history.value.reduce((acc, curr) => {
-    if (curr.amount > 0) return acc + curr.amount
-    return acc
-  }, 0),
-)
-
-const calculatedExpense = computed(() =>
-  history.value.reduce((acc, curr) => {
-    if (curr.amount < 0) return acc - curr.amount
-    return acc
-  }, 0),
-)
 </script>
 
 <template>
