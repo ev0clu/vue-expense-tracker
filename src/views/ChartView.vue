@@ -1,6 +1,10 @@
+<script setup lang="ts">
+import PieChart from '@/components/PieChart.vue'
+</script>
+
 <template>
   <div class="chart">
-    <h1>This is the Chart page</h1>
+    <PieChart />
   </div>
 </template>
 
@@ -9,6 +13,10 @@
   .chart {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: auto;
+    margin: auto;
   }
 }
 </style>
