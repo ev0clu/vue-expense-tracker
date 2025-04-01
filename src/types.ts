@@ -5,4 +5,5 @@ export type History = {
   name: string
   amount: number
   createdAt: Date
+  updatedAt: Date
 }

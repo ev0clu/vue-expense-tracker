@@ -4,9 +4,9 @@ import { restoreStorage, saveStorage } from '../localstorage'
 
 export function useStore() {
   const history = ref<History[]>([
-    { id: '1a', name: 'shopping', amount: -15, createdAt: new Date() },
-    { id: '2b', name: 'selling', amount: 100, createdAt: new Date() },
-    { id: '3c', name: 'car', amount: 30, createdAt: new Date() },
+    { id: '1a', name: 'shopping', amount: -15, createdAt: new Date(), updatedAt: new Date() },
+    { id: '2b', name: 'selling', amount: 100, createdAt: new Date(), updatedAt: new Date() },
+    { id: '3c', name: 'car', amount: 30, createdAt: new Date(), updatedAt: new Date() },
   ])
 
   ;(() => {
@@ -16,8 +16,8 @@ export function useStore() {
   })()
 
   const addItem = (id: string, name: string, amount: number) => {
-    const createdAt = new Date()
-    history.value.push({ id, name, amount, createdAt })
+    const date = new Date()
+    history.value.push({ id, name, amount, createdAt: date, updatedAt: date })
     saveStorage(history.value)
   }
 
