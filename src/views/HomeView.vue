@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import { useToast } from 'vue-toastification'
 import WrapperComponent from '@/components/WrapperComponent.vue'
-import { X } from 'lucide-vue-next'
+import { Pencil, X } from 'lucide-vue-next'
 import DeleteModal from '@/components/DeleteModal.vue'
-import FormComponent from '@/components/FormComponent.vue'
+import FormCreateComponent from '@/components/FormCreateComponent.vue'
 import { useStore } from '@/composable/useStore'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import FormUpdateModal from '@/components/FormUpdateModal.vue'
 
 const toast = useToast()
-const openModal = ref(false)
+const openDeleteModal = ref(false)
+const openEditModal = ref(false)
 const itemId = ref<null | string>(null)
 
-const { history, addItem, removeItem, calculatedBalance, calculatedIncome, calculatedExpense } =
-  useStore()
+const {
+  history,
+  addItem,
+  updateItem,
+  removeItem,
+  calculatedBalance,
+  calculatedIncome,
+  calculatedExpense,
+} = useStore()
+
+const historyItem = computed(() => history.value.find((item) => item.id === itemId.value))
 
 const deleteItem = (id: string) => {
   const item = removeItem(id)
@@ -22,23 +33,45 @@ const deleteItem = (id: string) => {
   } else {
     toast.success(`${item} has been deleted!`)
   }
-  openModal.value = false
+  openDeleteModal.value = false
   itemId.value = ''
 }
 
-const handleOpenModalClick = (id: string) => {
-  openModal.value = true
+const handleOpenDeleteModalClick = (id: string) => {
+  openDeleteModal.value = true
   itemId.value = id
 }
 
-const handleCloseModalClick = () => {
-  openModal.value = false
+const handleCloseDeleteModalClick = () => {
+  openDeleteModal.value = false
   itemId.value = ''
 }
 
-const formSubmit = (id: string, name: string, amount: number) => {
+const handleOpenEditModalClick = (id: string) => {
+  openEditModal.value = true
+  itemId.value = id
+}
+
+const handleCloseEditModalClick = () => {
+  openEditModal.value = false
+  itemId.value = ''
+}
+
+const formAddSubmit = (id: string, name: string, amount: number) => {
   addItem(id, name, amount)
   toast.success(`${name} has been added!`)
+}
+
+const formEditSubmit = (id: string, name: string, amount: number) => {
+  const item = updateItem(id, name, amount)
+
+  if (item === null) {
+    toast.error('Item does not found!')
+  } else {
+    toast.success(`${item} has been updated!`)
+  }
+  openEditModal.value = false
+  itemId.value = ''
 }
 </script>
 
@@ -72,21 +105,33 @@ const formSubmit = (id: string, name: string, amount: number) => {
               <div :class="item.amount < 0 ? 'history-expense' : 'history-income'">
                 {{ item.amount < 0 ? '-' : '+' }}${{ Math.abs(item.amount) }}
               </div>
-              <button id="delete-btn" @click="handleOpenModalClick(item.id)"><X /></button>
+              <button id="edit-btn" @click="handleOpenEditModalClick(item.id)"><Pencil /></button>
+              <button id="delete-btn" @click="handleOpenDeleteModalClick(item.id)"><X /></button>
             </li>
           </TransitionGroup>
         </template>
       </WrapperComponent>
       <Teleport to="body">
-        <div v-if="openModal && itemId !== null">
-          <DeleteModal :id="itemId" @close="handleCloseModalClick" @delete="deleteItem" /></div
-      ></Teleport>
+        <div v-if="openDeleteModal && itemId !== null">
+          <DeleteModal :id="itemId" @close="handleCloseDeleteModalClick" @delete="deleteItem" />
+        </div>
+      </Teleport>
+      <Teleport to="body">
+        <div v-if="openEditModal && itemId !== null">
+          <FormUpdateModal
+            :id="itemId"
+            :history="historyItem ?? undefined"
+            @close="handleCloseEditModalClick"
+            @form-submit="formEditSubmit"
+          />
+        </div>
+      </Teleport>
       <WrapperComponent>
         <template #header>
           <p>New Transaction</p>
         </template>
         <template #content>
-          <FormComponent @form-submit="formSubmit" />
+          <FormCreateComponent @form-submit="formAddSubmit" />
         </template>
       </WrapperComponent>
     </div>
@@ -196,6 +241,19 @@ ul > * + * {
   margin-right: 5px;
 }
 
+#edit-btn {
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  visibility: hidden;
+  position: absolute;
+  right: -60px;
+
+  &:hover {
+    color: var(--color-green);
+  }
+}
+
 #delete-btn {
   padding: 5px;
   width: 30px;
@@ -209,7 +267,8 @@ ul > * + * {
   }
 }
 
-.history-item:hover #delete-btn {
+.history-item:hover #delete-btn,
+.history-item:hover #edit-btn {
   visibility: visible;
 }
 </style>
