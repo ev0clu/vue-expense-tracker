@@ -21,6 +21,22 @@ export function useStore() {
     saveStorage(history.value)
   }
 
+  const updateItem = (id: string, name: string, amount: number) => {
+    const index = history.value.findIndex((item) => item.id === id)
+
+    if (index !== -1) {
+      const updatedAt = new Date()
+
+      history.value[index].name = name
+      history.value[index].amount = amount
+      history.value[index].updatedAt = updatedAt
+
+      saveStorage(history.value)
+      return history.value[index].name
+    }
+    return null
+  }
+
   const removeItem = (id: string): null | string => {
     const index = history.value.findIndex((item) => item.id === id)
     const name = history.value[index].name
@@ -55,6 +71,7 @@ export function useStore() {
   return {
     history,
     addItem,
+    updateItem,
     removeItem,
     calculatedBalance,
     calculatedIncome,
