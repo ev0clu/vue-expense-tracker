@@ -19,7 +19,7 @@ const chartData = {
     {
       label: 'Amount',
       data: [calculatedIncome.value, calculatedExpense.value],
-      backgroundColor: ['rgb(251, 113, 133)', 'rgb(16, 185, 129)'],
+      backgroundColor: ['rgb(16, 185, 129)', 'rgb(251, 113, 133)'],
       hoverOffset: 4,
     },
   ],
