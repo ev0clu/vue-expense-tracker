@@ -14,7 +14,7 @@ const amount = ref<null | number>(null)
 function formSubmitHandler() {
   if (title.value.trim().length <= 3) {
     error.value = 'title'
-  } else if (typeof amount.value !== 'number' || amount.value === 0) {
+  } else if (typeof amount.value !== 'number' || amount.value === 0 || amount.value === null) {
     error.value = 'amount'
   } else {
     emits('formSubmit', crypto.randomUUID(), title.value, amount.value)

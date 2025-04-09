@@ -23,12 +23,12 @@ function closeButtonHandler() {
 function formSubmitHandler() {
   if (title.value.trim().length <= 3) {
     error.value = 'title'
-  } else if (typeof amount.value !== 'number' || amount.value === 0) {
+  } else if (typeof amount.value !== 'number' || amount.value === 0 || amount.value === null) {
     error.value = 'amount'
   } else {
     emits('formSubmit', props.id, title.value, amount.value)
     title.value = ''
-    amount.value = 0
+    amount.value = null
     error.value = ''
   }
 }
