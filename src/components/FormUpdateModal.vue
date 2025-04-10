@@ -36,7 +36,7 @@ function formSubmitHandler() {
 
 <template>
   <div class="modal-backdrop" @click.self="closeButtonHandler">
-    <div class="delete-modal">
+    <div class="update-modal">
       <form @submit.prevent="formSubmitHandler">
         <div class="title">
           <label for="title">Title</label>
@@ -79,7 +79,7 @@ function formSubmitHandler() {
   height: 100vh;
   z-index: 15;
 }
-.delete-modal {
+.update-modal {
   background: #ffffff;
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
@@ -93,7 +93,7 @@ function formSubmitHandler() {
   border-radius: 8px;
 }
 
-.delete-modal > * + * {
+.update-modal > * + * {
   margin-top: 1rem;
 }
 
