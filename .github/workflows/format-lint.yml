@@ -34,8 +34,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install dependencies (clean install)
-        run: npm ci
+      - name: Install dependencies (normal install instead of clean install due to local macos / github action linux)
+        run: npm i
 
       - name: Run format
         run: npm run format
