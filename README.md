@@ -2,7 +2,7 @@
 
 A simple expense tracker app has built with Vue.js framework, Typescript and more. The app allows users to manage their expenses and vizualize the data on chart.
 
-### Demo video: [Link](https://github.com/ev0clu/vue-expense-tracker)
+### Demo video: [Link](https://ev0clu.github.io/vue-expense-tracker/)
 
 ## Features
 
