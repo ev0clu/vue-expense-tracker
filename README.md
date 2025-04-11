@@ -18,6 +18,11 @@ A simple expense tracker app has built with Vue.js framework, Typescript and mor
 3. Run `npm run dev` command in your terminal
 4. Server running at `http://localhost:5173/`
 
+## Useful links and informations
+
+- Vite static deploy to GitHub as GitHub Pages with GitHub Actions
+  - [Vite](https://vite.dev/guide/static-deploy)
+
 ### Dependencies
 
 - [Vue.js](https://vuejs.org/)
