@@ -2,13 +2,13 @@ import { computed, ref } from 'vue'
 import type { History } from '../types'
 import { restoreStorage, saveStorage } from '../localstorage'
 
-export function useStore() {
-  const history = ref<History[]>([
-    { id: '1a', name: 'shopping', amount: -15, createdAt: new Date(), updatedAt: new Date() },
-    { id: '2b', name: 'selling', amount: 100, createdAt: new Date(), updatedAt: new Date() },
-    { id: '3c', name: 'car', amount: 30, createdAt: new Date(), updatedAt: new Date() },
-  ])
+const history = ref<History[]>([
+  { id: '1a', name: 'shopping', amount: -15, createdAt: new Date(), updatedAt: new Date() },
+  { id: '2b', name: 'selling', amount: 100, createdAt: new Date(), updatedAt: new Date() },
+  { id: '3c', name: 'car', amount: 30, createdAt: new Date(), updatedAt: new Date() },
+])
 
+export function useStore() {
   ;(() => {
     const balance = restoreStorage()
     if (!balance) saveStorage(history.value)
